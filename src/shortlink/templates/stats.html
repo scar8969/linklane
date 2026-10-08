@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Stats for {{ link.slug }} · shortlink{% endblock %}
+{% block content %}
+<h1><span class="mono">/{{ link.slug }}</span></h1>
+<p style="color:var(--muted);margin:0 0 4px">Destination: <span class="mono">{{ link.url }}</span></p>
+
+{% if error %}<div class="notice">{{ error }}</div>{% endif %}
+
+<div class="card">
+  <div class="row" style="gap:8px;flex-wrap:wrap">
+    <span class="tag">{{ "password protected" if link.password_hash else "open" }}</span>
+    <span class="tag">{{ "enabled" if link.enabled else "disabled" }}</span>
+    <span class="tag">expires {% if link.expires_at %}{{ link.expires_at.strftime('%Y-%m-%d %H:%M') }} UTC{% else %}never{% endif %}</span>
+    <span class="tag">created {{ link.created_at.strftime('%Y-%m-%d %H:%M') if link.created_at else '—' }} UTC</span>
+    <span class="tag">link id {{ link.id }}</span>
+  </div>
+</div>
+
+<h2>Last {{ days }} days — {{ data.clicks }} recorded clicks</h2>
+<div class="card">
+  <div class="row" style="gap:26px;flex-wrap:wrap">
+    <div><div style="color:var(--muted);font-size:13px">Clicks</div>
+         <div style="font-size:26px;font-weight:700">{{ data.clicks }}</div></div>
+    <div><div style="color:var(--muted);font-size:13px">Unique IPs</div>
+         <div style="font-size:26px;font-weight:700">{{ data.unique }}</div></div>
+    <div><div style="color:var(--muted);font-size:13px">Referrers</div>
+         <div style="font-size:26px;font-weight:700">{{ data.referrers | length }}</div></div>
+  </div>
+  {% if data.series %}
+  <div class="bars">
+    {% for point in data.series %}
+      <div style="height:{{ [point.count * 20, 120] | min }}px"
+           title="{{ point.date }}: {{ point.count }}"></div>
+    {% endfor %}
+  </div>
+  <table style="margin-top:10px">
+    <thead><tr><th>Date</th><th>Clicks</th></tr></thead>
+    <tbody>{% for point in data.series %}<tr><td class="mono">{{ point.date }}</td><td>{{ point.count }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% else %}
+  <p style="margin:12px 0 0;color:var(--muted)">
+    No clicks recorded yet. Following <a href="{{ url_for('short.go', slug=link.slug) }}">/{{ link.slug }}</a>
+    writes one Click row through <code>record_click()</code>, then reload this page.
+  </p>
+  {% endif %}
+</div>
+
+{% if data.referrers %}
+<h2>Referrers</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Referrer</th><th>Clicks</th></tr></thead>
+    <tbody>{% for ref, n in data.referrers.items() %}<tr><td class="mono">{{ ref }}</td><td>{{ n }}</td></tr>{% endfor %}</tbody>
+  </table>
+</div>
+{% endif %}
+
+<h2>Machine-readable</h2>
+<div class="card">
+  <pre>curl {{ url_for('short.stats', slug=link.slug, days=days) }}</pre>
+</div>
+{% endblock %}

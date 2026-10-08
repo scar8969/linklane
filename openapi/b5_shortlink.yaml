@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: "🔗 shortlink"
+  version: 0.1.0
+paths:
+  /api/links:
+    post:
+      summary: create
+      responses:
+        "200":
+          description: ok
+  /<slug>:
+    get:
+      summary: redirect
+      responses:
+        "200":
+          description: ok
+  /api/links/<slug>/stats:
+    get:
+      summary: stats
+      responses:
+        "200":
+          description: ok
+  /api/links/<slug>:
+    delete:
+      summary: disable
+      responses:
+        "200":
+          description: ok

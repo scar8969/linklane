@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}shortlink{% endblock %}</title>
+<style>
+  :root{
+    --bg:#0e1512; --panel:#141d19; --line:#22322b; --text:#e6f1ea; --muted:#8aa79a;
+    --lime:#7ae582; --amber:#ffd166; --bad:#ff6b6b; --code:#0a100d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{display:flex;align-items:center;gap:14px;padding:14px 22px;
+         border-bottom:1px solid var(--line);background:#101a15}
+  .brand{font-weight:800;color:var(--lime);letter-spacing:.4px}
+  .brand small{color:var(--muted);font-weight:400;letter-spacing:0}
+  nav{margin-left:auto;display:flex;gap:8px}
+  nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-size:14px}
+  nav a:hover{background:#1b2a23;color:var(--text)}
+  main{max-width:900px;margin:26px auto 0;padding:0 18px}
+  h1{font-size:21px;margin:0 0 4px}
+  h2{font-size:15px;color:var(--muted);margin:24px 0 8px;font-weight:600}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
+  input,select{width:100%;background:var(--code);color:var(--text);
+        border:1px solid var(--line);border-radius:9px;padding:9px 11px;font:inherit}
+  .grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+  button{margin-top:16px;padding:9px 18px;border:0;border-radius:9px;cursor:pointer;
+         background:var(--lime);color:#08130c;font-weight:700;font:inherit}
+  .row{display:flex;align-items:center;gap:10px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600}
+  td.u{max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  code,pre,.mono{font-family:ui-monospace,Consolas,monospace}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;
+      padding:12px;overflow:auto;white-space:pre-wrap;margin:0}
+  .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;
+       border:1px solid var(--line);color:var(--muted)}
+  .ok{color:var(--lime)} .bad{color:var(--bad)}
+  .notice{border-radius:10px;padding:10px 12px;margin:12px 0;font-size:14px;
+       border:1px solid #ff6b6b40;background:#231515;color:var(--bad)}
+  .bars{display:flex;align-items:flex-end;gap:6px;height:120px;margin-top:8px;
+        border-bottom:1px solid var(--line)}
+  .bars div{background:var(--lime);width:22px;min-height:2px;border-radius:3px 3px 0 0;opacity:.75}
+  footer{max-width:900px;margin:28px auto 40px;padding:0 18px;color:var(--muted);font-size:13px}
+  footer code{color:var(--text)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">shortlink <small>· redirects with click analytics</small></div>
+  <nav>
+    <a href="{{ url_for('index') }}">Links</a>
+    {% if link is defined %}
+      <a href="{{ url_for('stats_page', slug=link.slug) }}">Stats for {{ link.slug }}</a>
+      <a href="{{ url_for('short.go', slug=link.slug) }}">Open /{{ link.slug }}</a>
+    {% endif %}
+  </nav>
+</header>
+<main>
+  {% block content %}{% endblock %}
+</main>
+<footer>
+  JSON API: <code>POST /api/links</code> &middot; <code>GET /SLUG</code> &middot;
+  <code>GET /api/links/SLUG/stats</code> &middot; <code>DELETE /api/links/SLUG</code>.
+  Every hit is recorded by <code>short.analytics.record_click()</code>.
+</footer>
+</body>
+</html>
