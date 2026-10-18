@@ -1,4 +1,4 @@
-"""B5 shortlink — tests. Run: pytest test_b5_shortlink.py"""
+"""B5 shortlink — tests. Run: pytest test_linklane.py"""
 import sys, os
 
 import pytest

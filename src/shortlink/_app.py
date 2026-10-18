@@ -1,4 +1,4 @@
-"""b5_shortlink — Flask application entry point.
+"""linklane — Flask application entry point.
 
 Templates live in the project-root templates/ directory, not under web/, so the
 template folder is passed explicitly; Flask(__name__) alone would look in

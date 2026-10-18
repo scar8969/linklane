@@ -34,7 +34,7 @@ RUN groupadd --system --gid 1001 app \
 WORKDIR /app
 
 COPY --from=builder /wheels /wheels
-RUN python -m pip install --no-cache-dir --no-index --find-links=/wheels b5-shortlink \
+RUN python -m pip install --no-cache-dir --no-index --find-links=/wheels linklane \
  && rm -rf /wheels \
  && mkdir -p /var/lib/shortlink/instance /var/lib/shortlink/log \
  && chown -R app:app /var/lib/shortlink /app
