@@ -1,10 +1,11 @@
+from flask import Blueprint, abort, jsonify, redirect, request
+
 from ..models import Link, db
 from .analytics import record_click, stats
 from .links import create, resolve
 
-from flask import Blueprint, jsonify, request, redirect, abort
-
 bp = Blueprint("short", __name__)
+
 
 @bp.post("/api/links")
 def create_link():
@@ -14,6 +15,7 @@ def create_link():
     link = create(d["url"], d.get("slug", ""), d.get("expiry", ""), d.get("password", ""))
     return jsonify({"slug": link.slug, "url": f"/{link.slug}"})
 
+
 @bp.get("/<slug>")
 def go(slug):
     link, err = resolve(slug, request.args.get("password", ""))
@@ -22,10 +24,12 @@ def go(slug):
     record_click(link, request)
     return redirect(link.url)
 
+
 @bp.get("/api/links/<slug>/stats")
 def link_stats(slug):
     link = Link.query.filter_by(slug=slug).first_or_404()
     return jsonify(stats(link.id, request.args.get("days", 30, type=int)))
+
 
 @bp.delete("/api/links/<slug>")
 def disable(slug):

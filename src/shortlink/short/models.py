@@ -6,6 +6,7 @@ written against the old package-relative path ('from short.models import
 Link') keep working; it forwards to the single declaration instead of
 defining a second model bound to a different SQLAlchemy metadata object.
 """
-from ..models import Click, Link, db  # noqa: F401
 
-__all__ = ["Link", "Click", "db"]
+from ..models import Click, Link, db
+
+__all__ = ["Click", "Link", "db"]

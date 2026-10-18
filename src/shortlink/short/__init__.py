@@ -15,6 +15,7 @@ module, so the correct import inside this package is
 and NOT 'from . import db', which would look for a non-existent short/db.py.
 The handle is re-exported here only so 'from short import db' keeps working.
 """
-from ..models import Click, Link, db  # noqa: F401
 
-__all__ = ["db", "Link", "Click"]
+from ..models import Click, Link, db
+
+__all__ = ["Click", "Link", "db"]

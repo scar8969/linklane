@@ -1,7 +1,9 @@
 from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
 
 class Link(db.Model):
     __tablename__ = "links"
@@ -12,6 +14,7 @@ class Link(db.Model):
     expires_at = db.Column(db.DateTime, nullable=True)
     enabled = db.Column(db.Integer, default=1)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 
 class Click(db.Model):
     __tablename__ = "clicks"
