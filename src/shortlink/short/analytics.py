@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Any
 
 
 def record_click(link, request):
@@ -20,11 +21,11 @@ def stats(link_id, days=30):
 
     since = datetime.utcnow() - timedelta(days=days)
     clicks = Click.query.filter(Click.link_id == link_id, Click.at >= since).all()
-    series = {}
+    series: dict[str, Any] = {}
     for c in clicks:
         d = c.at.date().isoformat()
         series[d] = series.get(d, 0) + 1
-    refs = {}
+    refs: dict[str, int] = {}
     for c in clicks:
         r = c.referrer or "direct"
         refs[r] = refs.get(r, 0) + 1
