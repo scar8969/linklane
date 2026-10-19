@@ -1,7 +1,9 @@
 import hashlib
 import secrets
 import string
-from datetime import datetime, timedelta
+from datetime import timedelta
+
+from ..clock import utcnow
 
 _ALPHABET = string.ascii_letters + string.digits
 
@@ -22,7 +24,7 @@ def create(url, slug="", expiry="", password=""):
         slug = make_slug()
     expires = None
     if expiry in _EXPIRY:
-        expires = datetime.utcnow() + timedelta(seconds=_EXPIRY[expiry])
+        expires = utcnow() + timedelta(seconds=_EXPIRY[expiry])
     pw = hashlib.sha256(password.encode()).hexdigest() if password else None
     link = Link(slug=slug, url=url, password_hash=pw, expires_at=expires)
     db.session.add(link)
@@ -36,7 +38,7 @@ def resolve(slug, password=""):
     link = Link.query.filter_by(slug=slug, enabled=1).first()
     if not link:
         return None, "not found"
-    if link.expires_at and link.expires_at < datetime.utcnow():
+    if link.expires_at and link.expires_at < utcnow():
         link.enabled = 0
         db.session.commit()
         return None, "expired"

@@ -1,6 +1,6 @@
-from datetime import datetime
-
 from flask_sqlalchemy import SQLAlchemy
+
+from .clock import utcnow
 
 db = SQLAlchemy()
 
@@ -13,7 +13,7 @@ class Link(db.Model):
     password_hash = db.Column(db.String(128), nullable=True)
     expires_at = db.Column(db.DateTime, nullable=True)
     enabled = db.Column(db.Integer, default=1)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utcnow)
 
 
 class Click(db.Model):
@@ -23,4 +23,4 @@ class Click(db.Model):
     ip = db.Column(db.String(64), default="")
     referrer = db.Column(db.String(256), default="")
     ua = db.Column(db.String(256), default="")
-    at = db.Column(db.DateTime, default=datetime.utcnow)
+    at = db.Column(db.DateTime, default=utcnow)

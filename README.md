@@ -119,7 +119,7 @@ Produced on this checkout by `pytest --cov` and by booting `wsgi.py` and issuing
 | --- | --- |
 | Tests | **24 / 24 passed** (2.5 s, exit 0) |
 | Line coverage | **71.5%** — 419 of 553 statements |
-| Source | 15 files / 1,270 lines |
+| Source | 15 files / 1,292 lines |
 | Test code | 4 files / 237 lines |
 | Documented paths | 4 in the spec, 2 GET |
 | Live probe | 10 GET requests to the booted app, **7 answered 200** |
@@ -158,9 +158,9 @@ linklane/
 │   ├── errors.py                       108  Typed application errors and their HTTP mapping for 
 │   ├── _app.py                          79  linklane — Flask application entry point
 │   ├── paths.py                         52  Filesystem layout for shortlink
-│   ├── short/links.py                   50  
+│   ├── short/links.py                   52  
+│   ├── short/analytics.py               40  
 │   ├── short/api.py                     40  
-│   ├── short/analytics.py               38  
 │   ├── cli.py                           28  
 │   ├── models.py                        27  
 ├── openapi/linklane.yaml                  the contract of record
